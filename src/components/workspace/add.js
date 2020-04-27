@@ -1,5 +1,6 @@
 import React from "react";
 import { compose, withProps, lifecycle } from "recompose";
+import { Alert } from "react-bootstrap";
 
 import {
   withScriptjs,
@@ -39,10 +40,13 @@ const MyMapComponent = compose(
   withScriptjs,
   withGoogleMap
 )((props) => (
-  <GoogleMap defaultZoom={8} defaultCenter={{ lat: 26.820553, lng: 30.802498 }}>
+  <GoogleMap
+    defaultZoom={15}
+    defaultCenter={{ lat: 31.205895, lng: 29.924985 }}
+  >
     {props.isMarkerShown && (
       <Marker
-        position={{ lat: 26.820553, lng: 30.802498 }}
+        position={{ lat: 31.205895, lng: 29.924985 }}
         draggable={true}
         ref={props.onMarkerMounted}
         onPositionChanged={props.onPositionChanged}
@@ -68,6 +72,7 @@ class MyParentComponentWrapper extends React.PureComponent {
   };
 
   addWorkspaceHandler = (e) => {
+    this.setState({ loginDetails: this.props.location.state });
     this.setState(
       {
         latitude: global.marker_position.lat(),
@@ -76,12 +81,64 @@ class MyParentComponentWrapper extends React.PureComponent {
       function () {
         e.preventDefault();
         axios
-          .post("http://localhost:5000/workspace/new", this.state)
+          .post("http://localhost:5000/workspace/new", {
+            ...this.state,
+            loginDetails: this.props.location.state,
+          })
           .then((response) => {
             console.log(response.data);
+            if (response.data.affectedRows) {
+              this.setState({
+                message: (
+                  <Alert style={{ margin: "0.8rem" }} variant="success">
+                    {"Added Successfully"}
+                  </Alert>
+                ),
+              });
+              this.props.history.push({
+                pathname: "/login/",
+              });
+            } else {
+              this.setState({
+                message: (
+                  <Alert style={{ margin: "0.8rem" }} variant="danger">
+                    {"Error adding workspace"}
+                  </Alert>
+                ),
+              });
+            }
           });
       }
     );
+    e.preventDefault();
+    // console.log(this.props.location.state);
+    // this.setState({ loginDetails: this.props.location.state });
+    // axios({
+    //   method: "POST",
+    //   url: "http://localhost:5000/workspace/new",
+    //   data: { ...this.state, loginDetails: this.props.location.state },
+    // }).then((response) => {
+    //   if (response.data.affectedRows) {
+    //     this.setState({
+    //       message: (
+    //         <Alert style={{ margin: "0.8rem" }} variant="success">
+    //           {"Added Successfully"}
+    //         </Alert>
+    //       ),
+    //     });
+    //     this.props.history.push({
+    //       pathname: "/login/",
+    //     });
+    //   } else {
+    //     this.setState({
+    //       message: (
+    //         <Alert style={{ margin: "0.8rem" }} variant="danger">
+    //           {"Error adding workspace"}
+    //         </Alert>
+    //       ),
+    //     });
+    //   }
+    // });
   };
 
   changeStateHandler = (e) => {
@@ -90,7 +147,6 @@ class MyParentComponentWrapper extends React.PureComponent {
   render() {
     return (
       <div>
-        <MyMapComponent isMarkerShown={true} />
         <form>
           <form>
             <label>
@@ -210,6 +266,8 @@ class MyParentComponentWrapper extends React.PureComponent {
             </label>
           </form>
         </form>
+        <MyMapComponent isMarkerShown={true} />
+
         <div className="footer">
           <button
             onClick={this.addWorkspaceHandler}
