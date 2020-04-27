@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 const useStyles = makeStyles({
   table: {
@@ -33,22 +33,35 @@ function createData(
   };
 }
 
-const rows = [
-  createData("Yomna", "Eldawy", 2, 2, "2020-04-25 12:10:29", "yomna@gmail.com"),
-  createData("Salma", "Samir", 1, 1, "2020-04-25 12:10:29", "salma@gmail.com"),
-];
+const rows = [];
 
 class UsersTable extends Component {
   state = { classes: useStyles, rows };
 
+  deleteEntry = (id) => {
+    var curUsers = [...this.state.rows];
+    var user = curUsers.find((element) => element.requestId === id);
+    var ind = curUsers.indexOf(user);
+    curUsers.splice(ind, 1);
+    this.setState({ rows: curUsers });
+    console.log(user);
+  };
+
   checkoutHandler = (checkInId) => {
-    return () => {};
+    return () => {
+      this.deleteEntry(checkInId);
+      axios
+        .post("http://localhost:5000/checkout", { id: checkInId })
+        .then((response) => {
+          console.log(response);
+        });
+    };
   };
 
   constructor(props) {
     super(props);
-    const result = axios
-      .get("http://localhost:5000/dashboard/1")
+    axios
+      .get("http://localhost:5000/dashboard/" + props.workspaceId)
       .then((response) => {
         console.log(response);
         this.setState({

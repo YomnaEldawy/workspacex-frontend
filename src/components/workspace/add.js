@@ -1,42 +1,47 @@
 import React from "react";
 import loginImg from "../../login.svg";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
+import Map from "./map";
 
 const axios = require("axios");
 export default class Add_workspace extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
-    message: ""
+    loginDetails: "",
+    message: "",
   };
-  addWorkspaceHandler = e => {
+  addWorkspaceHandler = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/workspace/new", this.state)
-      .then(response => {
-        if (response.data.affectedRows) {
-          this.setState({
-            message: (
-              <Alert style={{ margin: "0.8rem" }} variant="success">
-                {"Added Successfully"}
-              </Alert>
-            )
-          });
-        } else {
-          this.setState({
-            message: (
-              <Alert style={{ margin: "0.8rem" }} variant="danger">
-                {"Error adding workspace"}
-              </Alert>
-            )
-          });
-        }
-      });
+    console.log(this.props.location.state);
+    this.setState({ loginDetails: this.props.location.state });
+    axios({
+      method: "POST",
+      url: "http://localhost:5000/workspace/new",
+      data: { ...this.state, loginDetails: this.props.location.state },
+    }).then((response) => {
+      if (response.data.affectedRows) {
+        this.setState({
+          message: (
+            <Alert style={{ margin: "0.8rem" }} variant="success">
+              {"Added Successfully"}
+            </Alert>
+          ),
+        });
+        this.props.history.push({
+          pathname: "/login/",
+        });
+      } else {
+        this.setState({
+          message: (
+            <Alert style={{ margin: "0.8rem" }} variant="danger">
+              {"Error adding workspace"}
+            </Alert>
+          ),
+        });
+      }
+    });
   };
 
-  changeStateHandler = e => {
+  changeStateHandler = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -46,6 +51,7 @@ export default class Add_workspace extends React.Component {
         <div className="container">
           <div>{this.state.message}</div>
           <div className="base-container" ref={this.props.containerRef}>
+            {<Map />}
             <div className="header">New Workspace</div>
             <div className="content">
               <div className="image">

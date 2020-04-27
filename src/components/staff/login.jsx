@@ -6,30 +6,55 @@ class Login extends Component {
   state = {
     email: "",
     password: "",
-    message: ""
+    message: "",
   };
-  changeHandler = e => {
+  changeHandler = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  submitHandler = e => {
+  submitHandler = (e) => {
     e.preventDefault();
     axios
       .post("http://localhost:5000/staff/login", this.state)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
         if (response.data.success) {
           this.setState({ message: "" });
-          this.props.history.push("/workspace/new");
+          if (response.data.details.workspaceId) {
+            this.props.history.push({
+              pathname: "/home",
+              state: {
+                userDetails: response.data.details,
+                token: response.data.token,
+              },
+            });
+          } else {
+            this.props.history.push({
+              pathname: "/workspace/new",
+              state: {
+                userDetails: response.data.details,
+                token: response.data.token,
+              },
+            });
+          }
         } else {
           this.setState({
             message: (
               <Alert style={{ margin: "0.8rem" }} variant="danger">
                 {"Wrong E-mail or password"}
               </Alert>
-            )
+            ),
           });
         }
+      })
+      .catch((err) => {
+        this.setState({
+          message: (
+            <Alert style={{ margin: "0.8rem" }} variant="danger">
+              {"Wrong E-mail or password"}
+            </Alert>
+          ),
+        });
       });
   };
   render() {

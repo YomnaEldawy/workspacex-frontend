@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
-import { Form, Button, Container, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 const useStyles = makeStyles({
   table: {
@@ -33,42 +33,61 @@ function createData(
   };
 }
 
-const rows = [
-  createData("Yomna", "Eldawy", 2, 2, "2020-04-25 12:10:29", "yomna@gmail.com"),
-  createData("Salma", "Samir", 1, 1, "2020-04-25 12:10:29", "salma@gmail.com"),
-];
+const rows = [];
 
 class UsersTable extends Component {
   state = { classes: useStyles, rows };
 
-  checkoutHandler = (checkInId) => {
+  deleteEntry = (checkInId) => {
+    var curUsers = [...this.state.rows];
+    var user = curUsers.find((element) => element.requestId === checkInId);
+    var ind = curUsers.indexOf(user);
+    curUsers.splice(ind, 1);
+    this.setState({ rows: curUsers });
+    console.log(user);
+  };
+
+  confirmHandler = (checkInId) => {
     return () => {
-      var curUsers = [...this.state.rows];
-      var user = curUsers.find((element) => element.requestId == checkInId);
-      var ind = curUsers.indexOf(user);
-      curUsers.splice(ind, 1);
-      this.setState({ rows: curUsers });
-      console.log(user);
+      this.deleteEntry(checkInId);
+      axios
+        .post("http://localhost:5000/approve", { id: checkInId })
+        .then((response) => {
+          console.log(response);
+        });
     };
   };
 
+  rejectHandler = (checkInId) => {
+    return () => {
+      this.deleteEntry(checkInId);
+      axios
+        .post("http://localhost:5000/reject", { id: checkInId })
+        .then((response) => {
+          console.log(response);
+        });
+    };
+  };
   constructor(props) {
     super(props);
-    axios.get("http://localhost:5000/dashboard/requests/1").then((response) => {
-      console.log(response);
-      this.setState({
-        rows: response.data.map((element) => {
-          return createData(
-            element.firstName,
-            element.lastName,
-            element.customerId,
-            element.requestId,
-            element.createdAt,
-            element.email
-          );
-        }),
+    console.log("workspace id is" + props.workspaceId);
+    axios
+      .get("http://localhost:5000/dashboard/requests/" + props.workspaceId)
+      .then((response) => {
+        console.log(response);
+        this.setState({
+          rows: response.data.map((element) => {
+            return createData(
+              element.firstName,
+              element.lastName,
+              element.customerId,
+              element.requestId,
+              element.createdAt,
+              element.email
+            );
+          }),
+        });
       });
-    });
   }
   render() {
     return (
@@ -93,7 +112,7 @@ class UsersTable extends Component {
                   <Button
                     variant="success"
                     type="submit"
-                    onClick={this.checkoutHandler(row.requestId)}
+                    onClick={this.confirmHandler(row.requestId)}
                   >
                     Confirm
                   </Button>
@@ -102,7 +121,7 @@ class UsersTable extends Component {
                   <Button
                     variant="danger"
                     type="submit"
-                    onClick={this.checkoutHandler(row.requestId)}
+                    onClick={this.rejectHandler(row.requestId)}
                   >
                     Dismiss
                   </Button>
