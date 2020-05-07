@@ -8,6 +8,7 @@ import Requests from "./pending-requests";
 import { Container, Card, Button, Row, Col, Navbar } from "react-bootstrap";
 import noPlaceImg from "../../no-workspace.jpg";
 import axios from "axios";
+import QR from "../workspace/qr";
 
 const useStyles = makeStyles({
   root: {
@@ -50,6 +51,20 @@ class Home extends Component {
       this.setState({
         content: <Requests workspaceId={workspaceId} />,
       });
+    } else if (newValue === 2) {
+      this.setState({
+        content: (
+          <QR
+            qrVal={
+              "{name: " +
+              this.state.workspaceName +
+              ", id: " +
+              workspaceId +
+              "}"
+            }
+          ></QR>
+        ),
+      });
     }
   };
   render() {
@@ -84,9 +99,16 @@ class Home extends Component {
             >
               <Tab label="Current Customers" />
               <Tab label="Pending Requests" />
+              <Tab label="My QR" />
             </Tabs>
           </Paper>
-          <div>{this.state.content}</div>
+          <div>
+            <Container fluid="sm">
+              <Row className="justify-content-md-center" float="center">
+                <Col sm={10}>{this.state.content}</Col>
+              </Row>
+            </Container>
+          </div>
         </div>
       );
     } else {

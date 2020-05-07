@@ -5,6 +5,7 @@ import AddWs from "./components/workspace/add";
 import Table from "./components/dashboard/users-table";
 import Requests from "./components/dashboard/pending-requests";
 import Home from "./components/dashboard/home";
+import SideBar from "./components/sidebar/sidebar";
 
 import { BrowserRouter, Route } from "react-router-dom";
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
           <Route path="/dashboard/current" component={Table} />
           <Route path="/dashboard/requests" component={Requests} />
           <Route path="/home" component={Home}></Route>
+          <Route path="/sidebar" component={SideBar}></Route>
         </div>
       </BrowserRouter>
     );

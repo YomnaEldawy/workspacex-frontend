@@ -22,7 +22,7 @@ class Login extends Component {
           this.setState({ message: "" });
           if (response.data.details.workspaceId) {
             this.props.history.push({
-              pathname: "/home",
+              pathname: "/sidebar",
               state: {
                 userDetails: response.data.details,
                 token: response.data.token,
@@ -48,6 +48,7 @@ class Login extends Component {
         }
       })
       .catch((err) => {
+        console.log(err);
         this.setState({
           message: (
             <Alert style={{ margin: "0.8rem" }} variant="danger">
