@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
 import axios from "axios";
+import cookie from "react-cookies";
 
 class Login extends Component {
   state = {
@@ -21,6 +22,12 @@ class Login extends Component {
         if (response.data.success) {
           this.setState({ message: "" });
           if (response.data.details.workspaceId) {
+            cookie.save("workspaceId", response.data.details.workspaceId, {
+              path: "/",
+            });
+            cookie.save("details", response.data.details, {
+              path: "/",
+            });
             this.props.history.push({
               pathname: "/sidebar",
               state: {

@@ -9,6 +9,7 @@ import { Container, Card, Button, Row, Col, Navbar } from "react-bootstrap";
 import noPlaceImg from "../../no-workspace.jpg";
 import axios from "axios";
 import QR from "../workspace/qr";
+import cookie from "react-cookies";
 
 const useStyles = makeStyles({
   root: {
@@ -28,7 +29,7 @@ class Home extends Component {
     super(props);
     var workspaceId = null;
     try {
-      workspaceId = this.props.location.state.userDetails.workspaceId;
+      workspaceId = cookie.load("details").workspaceId;
       axios
         .get("http://localhost:5000/workspace/" + workspaceId)
         .then((response) => {
@@ -41,7 +42,7 @@ class Home extends Component {
     this.setState({ value: newValue });
     var workspaceId = null;
     try {
-      workspaceId = this.props.location.state.userDetails.workspaceId;
+      workspaceId = cookie.load("details").workspaceId;
     } catch (err) {}
     if (newValue === 0) {
       this.setState({
@@ -70,7 +71,7 @@ class Home extends Component {
   render() {
     var workspaceId = null;
     try {
-      workspaceId = this.props.location.state.userDetails.workspaceId;
+      workspaceId = cookie.load("details").workspaceId;
     } catch (err) {}
     if (workspaceId) {
       return (
@@ -82,9 +83,9 @@ class Home extends Component {
               <Navbar.Text>
                 Signed in as:{" "}
                 <a href="#login">
-                  {this.props.location.state.userDetails.firstName +
+                  {cookie.load("details").firstName +
                     " " +
-                    this.props.location.state.userDetails.lastName}
+                    cookie.load("details").lastName}
                 </a>
               </Navbar.Text>
             </Navbar.Collapse>

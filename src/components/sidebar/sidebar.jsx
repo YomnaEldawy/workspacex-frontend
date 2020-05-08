@@ -18,6 +18,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Home from "../dashboard/home";
+import cookie from "react-cookies";
 
 const drawerWidth = 240;
 
@@ -111,7 +112,11 @@ export default function MiniDrawer() {
     return (
       <div>
         <h1>Hello world</h1>
-        {"content id is " + contentId}
+        {"content id is " + contentId} <br />
+        {"workspace id is: "}
+        {cookie.load("workspaceId")} <br />
+        {"\n Details: \n"}
+        {JSON.stringify(cookie.load("details"))}
       </div>
     );
   };
@@ -138,7 +143,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            WorkspaceX
           </Typography>
         </Toolbar>
       </AppBar>
