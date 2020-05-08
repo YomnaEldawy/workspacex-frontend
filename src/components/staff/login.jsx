@@ -30,10 +30,6 @@ class Login extends Component {
             });
             this.props.history.push({
               pathname: "/sidebar",
-              state: {
-                userDetails: response.data.details,
-                token: response.data.token,
-              },
             });
           } else {
             this.props.history.push({
