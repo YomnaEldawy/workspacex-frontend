@@ -19,6 +19,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Home from "../dashboard/home";
 import cookie from "react-cookies";
+import Photos from "../upload-photos/photos";
 
 const drawerWidth = 240;
 
@@ -108,6 +109,9 @@ export default function MiniDrawer() {
   const getContent = () => {
     if (contentId == 0) {
       return <Home />;
+    }
+    if (contentId == 1) {
+      return <Photos />;
     }
     return (
       <div>
