@@ -28,6 +28,7 @@ import EditProfile from "../edit-profile/edit";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import cookie from "react-cookies";
 import { Redirect } from "react-router-dom";
+import Events from "../events/add-event";
 
 const drawerWidth = 240;
 
@@ -120,6 +121,10 @@ export default function MiniDrawer() {
     if (contentId === 2) {
       return <Rooms />;
     }
+    if (contentId === 3) {
+      return <Events />;
+    }
+
     if (contentId == 4) {
       return <EditProfile />;
     }
