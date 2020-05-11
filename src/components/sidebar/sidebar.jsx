@@ -15,11 +15,19 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 import Home from "../dashboard/home";
-import cookie from "react-cookies";
 import Photos from "../upload-photos/photos";
+import Rooms from "../room/add-room";
+import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
+import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
+import EventIcon from "@material-ui/icons/Event";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
+import EditProfile from "../edit-profile/edit";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import cookie from "react-cookies";
+import { Redirect } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -91,7 +99,6 @@ export default function MiniDrawer() {
   const [open, setOpen] = React.useState(false);
 
   const [contentId, setContentId] = React.useState("");
-
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -107,22 +114,21 @@ export default function MiniDrawer() {
   };
 
   const getContent = () => {
-    if (contentId == 0) {
-      return <Home />;
-    }
-    if (contentId == 1) {
+    if (contentId === 1) {
       return <Photos />;
     }
-    return (
-      <div>
-        <h1>Hello world</h1>
-        {"content id is " + contentId} <br />
-        {"workspace id is: "}
-        {cookie.load("workspaceId")} <br />
-        {"\n Details: \n"}
-        {JSON.stringify(cookie.load("details"))}
-      </div>
-    );
+    if (contentId === 2) {
+      return <Rooms />;
+    }
+    if (contentId == 4) {
+      return <EditProfile />;
+    }
+    if (contentId == 5) {
+      cookie.remove("details");
+      cookie.remove("workspaceId");
+      return <Redirect to="/login" />;
+    }
+    return <Home />;
   };
 
   return (
@@ -175,25 +181,18 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {["Dashboard", "Starred", "Send email", "Drafts"].map(
-            (text, index) => (
-              <ListItem button key={text} onClick={handleItemClick(index)}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            )
-          )}
-        </List>
-        <Divider />
-        <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text} onClick={handleItemClick(index)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+          {[
+            ["Dashboard", <DashboardIcon />],
+            ["Photos", <AddPhotoAlternateIcon />],
+            ["Add a room", <MeetingRoomIcon />],
+            ["Add Event", <EventIcon />],
+            ["Edit profile", <AccountBoxIcon />],
+            // ["Amenities", <EmojiEmotionsIcon />],
+            ["Log out", <ExitToAppIcon />],
+          ].map((element, index) => (
+            <ListItem button key={element[0]} onClick={handleItemClick(index)}>
+              <ListItemIcon>{element[1]}</ListItemIcon>
+              <ListItemText primary={element[0]} />
             </ListItem>
           ))}
         </List>

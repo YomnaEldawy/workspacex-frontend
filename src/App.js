@@ -19,7 +19,6 @@ class App extends Component {
           <Route path="/workspace/new" component={AddWs} />
           <Route path="/dashboard/current" component={Table} />
           <Route path="/dashboard/requests" component={Requests} />
-          <Route path="/home" component={Home}></Route>
           <Route path="/sidebar" component={SideBar}></Route>
         </div>
       </BrowserRouter>
