@@ -47,7 +47,7 @@ class App extends React.Component {
     try {
       var workspaceId = cookie.load("details").workspaceId;
       axios
-        .get("http://localhost:5000/profile/" + workspaceId)
+        .get("http://workspace-x.herokuapp.com/profile/" + workspaceId)
         .then((response) => {
           console.log(response.data[0].name);
           this.setState({
@@ -114,7 +114,10 @@ class App extends React.Component {
       var workspaceId = cookie.load("details").workspaceId;
 
       axios
-        .post("http://localhost:5000/profile/edit/" + workspaceId, this.state)
+        .post(
+          "http://workspace-x.herokuapp.com/profile/edit/" + workspaceId,
+          this.state
+        )
         .then((response) => {
           console.log(response.data);
         });

@@ -81,7 +81,7 @@ class MyParentComponentWrapper extends React.PureComponent {
       function () {
         e.preventDefault();
         axios
-          .post("http://localhost:5000/workspace/new", {
+          .post("https://workspace-x.herokuapp.com/workspace/new", {
             ...this.state,
             loginDetails: this.props.location.state,
           })
@@ -115,7 +115,7 @@ class MyParentComponentWrapper extends React.PureComponent {
     // this.setState({ loginDetails: this.props.location.state });
     // axios({
     //   method: "POST",
-    //   url: "http://localhost:5000/workspace/new",
+    //   url: "https://workspace-x.herokuapp.com/workspace/new",
     //   data: { ...this.state, loginDetails: this.props.location.state },
     // }).then((response) => {
     //   if (response.data.affectedRows) {

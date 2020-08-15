@@ -51,7 +51,7 @@ class UsersTable extends Component {
     return () => {
       this.deleteEntry(checkInId);
       axios
-        .post("http://localhost:5000/checkout", { id: checkInId })
+        .post("http://workspace-x.herokuapp.com/checkout", { id: checkInId })
         .then((response) => {
           console.log(response);
         });
@@ -61,7 +61,7 @@ class UsersTable extends Component {
   constructor(props) {
     super(props);
     axios
-      .get("http://localhost:5000/dashboard/" + props.workspaceId)
+      .get("http://workspace-x.herokuapp.com/dashboard/" + props.workspaceId)
       .then((response) => {
         console.log(response);
         this.setState({

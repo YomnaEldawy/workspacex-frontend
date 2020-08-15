@@ -16,7 +16,7 @@ class AddRoom extends Component {
       var workspaceId = cookie.load("details").workspaceId;
       var body = { ...this.state };
       axios
-        .post("http://localhost:5000/room/new", {
+        .post("http://workspace-x.herokuapp.com/room/new", {
           ...body,
           workspaceId,
         })

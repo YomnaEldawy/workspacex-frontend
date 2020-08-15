@@ -16,7 +16,7 @@ class Signup extends Component {
   submitHandler = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/staff/signup", this.state)
+      .post("http://workspace-x.herokuapp.com/staff/signup", this.state)
       .then((response) => {
         console.log(response.data);
         if (response.data.success) {

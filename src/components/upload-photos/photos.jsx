@@ -31,7 +31,7 @@ class Photos extends React.Component {
         var workspaceId = cookie.load("details").workspaceId;
 
         axios
-          .post("http://localhost:5000/images/upload", {
+          .post("http://workspace-x.herokuapp.com/images/upload", {
             img: reader.result,
             workspaceId,
             description: this.state.caption,

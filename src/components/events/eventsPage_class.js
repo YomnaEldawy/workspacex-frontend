@@ -8,13 +8,15 @@ class EventsPage extends Component {
     super(props);
     var workspaceId = cookie.load("details").workspaceId;
 
-    axios.get("http://localhost:5000/event/" + workspaceId).then((response) => {
-      console.log(response.data);
-      this.setState({
-        all_events: response.data,
+    axios
+      .get("http://workspace-x.herokuapp.com/event/" + workspaceId)
+      .then((response) => {
+        console.log(response.data);
+        this.setState({
+          all_events: response.data,
+        });
+        console.log(this.state.all_events);
       });
-      console.log(this.state.all_events);
-    });
   }
   state = {
     all_events: [],

@@ -16,7 +16,7 @@ class Login extends Component {
   submitHandler = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/staff/login", this.state)
+      .post("http://workspace-x.herokuapp.com/staff/login", this.state)
       .then((response) => {
         console.log(response.data);
         if (response.data.success) {

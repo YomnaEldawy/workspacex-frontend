@@ -31,7 +31,10 @@ class Event extends Component {
     var workspaceId = cookie.load("details").workspaceId;
 
     axios
-      .post("http://localhost:5000/event/new/" + workspaceId, this.state)
+      .post(
+        "http://workspace-x.herokuapp.com/event/new/" + workspaceId,
+        this.state
+      )
       .then((response) => {
         console.log(response.data);
         window.setTimeout(() => {

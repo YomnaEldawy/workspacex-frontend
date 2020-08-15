@@ -51,7 +51,7 @@ class UsersTable extends Component {
     return () => {
       this.deleteEntry(checkInId);
       axios
-        .post("http://localhost:5000/approve", { id: checkInId })
+        .post("http://workspace-x.herokuapp.com/approve", { id: checkInId })
         .then((response) => {
           console.log(response);
         });
@@ -62,7 +62,7 @@ class UsersTable extends Component {
     return () => {
       this.deleteEntry(checkInId);
       axios
-        .post("http://localhost:5000/reject", { id: checkInId })
+        .post("http://workspace-x.herokuapp.com/reject", { id: checkInId })
         .then((response) => {
           console.log(response);
         });
@@ -72,7 +72,10 @@ class UsersTable extends Component {
     super(props);
     console.log("workspace id is" + props.workspaceId);
     axios
-      .get("http://localhost:5000/dashboard/requests/" + props.workspaceId)
+      .get(
+        "http://workspace-x.herokuapp.com/dashboard/requests/" +
+          props.workspaceId
+      )
       .then((response) => {
         console.log(response);
         this.setState({
